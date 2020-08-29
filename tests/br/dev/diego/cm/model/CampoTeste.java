@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import br.dev.diego.cm.exception.ExplosaoException;
+
 class CampoTeste {
 
 	private Campo campo;
@@ -66,5 +68,65 @@ class CampoTeste {
 	void testNaoVizinho() {
 		Campo vizinho = new Campo(1,1);
 		assertFalse(campo.adicionarVizinho(vizinho));
+	}
+	
+	
+	@Test
+	void testAlternarMarcacao() {
+		campo.alternarMarcacao();
+		campo.alternarMarcacao();
+		campo.alternarMarcacao();
+		assertTrue(campo.isMarcado());	
+	}
+	
+		
+	@Test
+	void testeAbrirNaoMinadoMarcado() {
+		campo.alternarMarcacao();
+		campo.minar();
+		assertFalse(campo.abrir());
+	}
+	
+	@Test
+	void testeAbrirMinadoNaoMarcado() {
+		campo.minar();
+		
+		assertThrows(ExplosaoException.class, () -> {
+			campo.abrir();
+		});
+	}
+	
+	@Test
+	void testeAbrirComVizinhos() {
+				
+		Campo v1 = new Campo(1, 1);
+		Campo v2 = new Campo(2, 2);
+		
+		v2.adicionarVizinho(v1);
+		
+		campo.adicionarVizinho(v2);		
+		
+		campo.abrir();
+		
+		assertTrue(v1.isAberto() && v2.isAberto());
+		
+	}
+	
+	@Test
+	void testeAbrirComVizinhos2() {
+				
+		Campo v1 = new Campo(1, 1);
+		Campo v11 = new Campo(1, 1);
+		v11.minar();
+		
+		Campo v2 = new Campo(2, 2);
+		v2.adicionarVizinho(v1);
+		v2.adicionarVizinho(v11);
+		
+		campo.adicionarVizinho(v2);		
+		campo.abrir();
+		
+		assertTrue(v2.isAberto() && v1.isFechado());
+		
 	}
 }

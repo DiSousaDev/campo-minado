@@ -129,4 +129,16 @@ class CampoTeste {
 		assertTrue(v2.isAberto() && v1.isFechado());
 		
 	}
+	
+	@Test
+	void testGetLinhaColuna() {
+		Campo v1 = new Campo(1, 1);
+		v1.getLinha();
+	}
+	
+	@Test
+	void testObjetivoAlcancado() {
+		Campo v1 = new Campo(1, 1);
+		
+	}
 }
